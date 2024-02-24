@@ -21,11 +21,11 @@ echo(Hbase=Hbase, Htier=Htier, Hlegs=Hlegs);
 Ghive = [[0, 0], [1, 0], [0, 1], [-1, 1], [-1, 0], [0, -1], [1, -1]];
 
 module hive_window(hole=Dthumb) {
-    prism(height=Hfloor+2*Dcut, r=Rint/2) hex(Ghive, rhex=hole/2);
+    punch(Hfloor) hex(Ghive, rhex=hole/2, r=Rint/2);
 }
 module hive_stack(height=2*Htier, rhex=Rhex, roff=0, color=undef) {
     echo(height=height, rhex=rhex);
-    colorize(color) prism(height=height, r=Rext/2+roff) hex(Ghive, rhex=Rhex+roff);
+    colorize(color) prism(height=height) hex(Ghive, rhex=Rhex+roff, r=Rext/2+roff);
 }
 module hive_magnets(r) {
     for (j=[-1,+1]) translate([0, (r-Rmagnet-Dwall)*j, -Hmagnet])
@@ -52,7 +52,7 @@ module hive_caddy(base=Hbase, legs=Hlegs, color=undef) {
             }
         }
         raise(Hfloor) hive_stack(height=2*Htier+1, roff=Rint/2);
-        raise(-Dcut) hive_window();
+        hive_window();
         raise(h) hive_magnets(r=Rbase);
     }
 }
@@ -60,9 +60,9 @@ module hive_grid(rhex=Rhex, hole=Dthumb, color=undef) {
     rwell = rhex - Dwall/2/sin(60);
     rhole = hole/2;
     colorize(color) difference() {
-        prism(height=2*Hfloor, r=Rext/2) hex(Ghive);
-        raise(Hfloor) prism(height=Hfloor+Dcut, r=Rint/2) hex(Ghive, rhex=rwell);
-        raise(-Dcut) hive_window();
+        prism(height=2*Hfloor) hex(Ghive, r=Rext/2);
+        raise(Hfloor) prism(height=Hfloor+Dcut) hex(Ghive, rhex=rwell, r=Rint/2);
+        hive_window();
     }
 }
 
